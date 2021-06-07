@@ -21,7 +21,7 @@ class ImageCarousel extends StatefulWidget {
 }
 
 class _ImageCarouselState extends State<ImageCarousel> {
-  var favList = <String>[];
+  var favList = <int>[];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,21 @@ class _ImageCarouselState extends State<ImageCarousel> {
               itemBuilder: (context, index) {
                 final imageUrl =
                     'https://source.unsplash.com/random/275x240?sig=$index';
-                return Image.network(imageUrl);
+                return GestureDetector(
+                  onTap: () => tapFav(index),
+                  child: Stack(
+                    children: [
+                      Image.network(imageUrl),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Icon(
+                          isSet(index) ? Icons.favorite : Icons.favorite_border,
+                          color: isSet(index) ? Colors.red : null,
+                        ),
+                      )
+                    ],
+                  ),
+                );
               },
             ),
           ),
@@ -56,4 +70,16 @@ class _ImageCarouselState extends State<ImageCarousel> {
       ),
     );
   }
+
+  void tapFav(int index) {
+    setState(() {
+      if (isSet(index)) {
+        favList.remove(index);
+      } else {
+        favList.add(index);
+      }
+    });
+  }
+
+  bool isSet(index) => favList.contains(index);
 }
