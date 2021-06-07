@@ -21,7 +21,7 @@ class ImageCarousel extends StatefulWidget {
 }
 
 class _ImageCarouselState extends State<ImageCarousel> {
-  var favList = <int>[];
+  var _favList = <int>[];
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +45,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
             child: PageView.builder(
               controller:
                   PageController(viewportFraction: 0.75, initialPage: 999),
-              itemBuilder: (context, index) {
-                final imageUrl =
-                    'https://source.unsplash.com/random/275x240?sig=$index';
-                return GestureDetector(
-                  onTap: () => tapFav(index),
-                  child: Stack(
-                    children: [
-                      Image.network(imageUrl),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(
-                          isSet(index) ? Icons.favorite : Icons.favorite_border,
-                          color: isSet(index) ? Colors.red : null,
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              },
+              itemBuilder: (context, index) => _imageView(index),
             ),
           ),
         ],
@@ -71,15 +53,38 @@ class _ImageCarouselState extends State<ImageCarousel> {
     );
   }
 
-  void tapFav(int index) {
+  Widget _imageView(int index) {
+    final imageUrl = 'https://source.unsplash.com/random/275x240?sig=$index';
+    return GestureDetector(
+      onTap: () => _tapFav(index),
+      child: Stack(
+        children: [
+          Image.network(imageUrl),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: _isSet(index)
+                ? Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  )
+                : Icon(
+                    Icons.favorite_border,
+                  ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void _tapFav(int index) {
     setState(() {
-      if (isSet(index)) {
-        favList.remove(index);
+      if (_isSet(index)) {
+        _favList.remove(index);
       } else {
-        favList.add(index);
+        _favList.add(index);
       }
     });
   }
 
-  bool isSet(index) => favList.contains(index);
+  bool _isSet(index) => _favList.contains(index);
 }
