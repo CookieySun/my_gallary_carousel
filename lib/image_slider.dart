@@ -15,36 +15,41 @@ class CarouselDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ImageSliderDemo(),
+      home: ImageSlider(),
     );
   }
 }
 
-class ImageSliderDemo extends StatelessWidget {
+class ImageSlider extends StatefulWidget {
+  const ImageSlider({Key? key}) : super(key: key);
+
+  @override
+  _ImageSliderState createState() => _ImageSliderState();
+}
+
+class _ImageSliderState extends State<ImageSlider> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image slider demo'),
+        title: Text('Image slider'),
       ),
-      body: Container(
-        child: CarouselSlider(
-          options: CarouselOptions(),
-          items: imgList
-              .map(
-                (item) => Container(
-                  margin: EdgeInsets.only(left: 8, right: 8),
-                  child: Center(
-                    child: Image.network(
-                      item,
-                      fit: BoxFit.cover,
-                      width: 1000,
-                    ),
+      body: CarouselSlider(
+        options: CarouselOptions(),
+        items: imgList
+            .map(
+              (item) => Container(
+                margin: EdgeInsets.only(left: 8, right: 8),
+                child: Center(
+                  child: Image.network(
+                    item,
+                    fit: BoxFit.cover,
+                    width: 1000,
                   ),
                 ),
-              )
-              .toList(),
-        ),
+              ),
+            )
+            .toList(),
       ),
     );
   }
