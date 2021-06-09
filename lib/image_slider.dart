@@ -28,6 +28,8 @@ class ImageSlider extends StatefulWidget {
 }
 
 class _ImageSliderState extends State<ImageSlider> {
+  final _favList = <String>[];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +40,31 @@ class _ImageSliderState extends State<ImageSlider> {
         options: CarouselOptions(),
         items: imgList
             .map(
-              (item) => Container(
-                margin: EdgeInsets.only(left: 8, right: 8),
-                child: Center(
-                  child: Image.network(
-                    item,
-                    fit: BoxFit.cover,
-                    width: 1000,
+              (item) => GestureDetector(
+                onTap: () => _tapFav(item),
+                child: Container(
+                  margin: EdgeInsets.only(left: 8, right: 8),
+                  child: Center(
+                    child: Stack(
+                      children: [
+                        Image.network(
+                          item,
+                          fit: BoxFit.cover,
+                          width: 1000,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: _isSet(item)
+                              ? Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                )
+                              : Icon(
+                                  Icons.favorite_border,
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -53,4 +73,16 @@ class _ImageSliderState extends State<ImageSlider> {
       ),
     );
   }
+
+  void _tapFav(String url) {
+    setState(() {
+      if (_isSet(url)) {
+        _favList.remove(url);
+      } else {
+        _favList.add(url);
+      }
+    });
+  }
+
+  bool _isSet(url) => _favList.contains(url);
 }
