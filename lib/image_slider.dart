@@ -53,16 +53,14 @@ class _ImageSliderState extends State<ImageSlider> {
                           width: 1000,
                         ),
                         Padding(
-                          padding: EdgeInsets.all(8),
-                          child: _isSet(item)
-                              ? Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                )
-                              : Icon(
-                                  Icons.favorite_border,
-                                ),
-                        ),
+                            padding: EdgeInsets.all(8),
+                            child: AnimatedSwitcher(
+                                duration: Duration(milliseconds: 300),
+                                child: _isSet(item)
+                                    ? FavIcon()
+                                    : Icon(
+                                        Icons.favorite_border,
+                                      ))),
                       ],
                     ),
                   ),
@@ -85,4 +83,14 @@ class _ImageSliderState extends State<ImageSlider> {
   }
 
   bool _isSet(url) => _favList.contains(url);
+}
+
+class FavIcon extends StatelessWidget {
+  const FavIcon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Icon(
+        Icons.favorite,
+        color: Colors.red,
+      );
 }
